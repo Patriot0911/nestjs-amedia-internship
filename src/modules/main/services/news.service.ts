@@ -2,9 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm/repository/Repository'
 
-import { NewsEntity } from '../entities/news.entity'
-import { INewsListResponse, INewsResponse } from '../interfaces/news'
-import { NewsDataMapper } from '../data-mappers/news.data-mapper'
+import { INewsListResponse, INewsResponse } from 'src/modules/main/interfaces/news'
+
+import { NewsEntity } from 'src/modules/main/entities/news.entity'
+
+import { NewsDataMapper } from 'src/modules/main/data-mappers/news.data-mapper'
 
 @Injectable()
 export class NewsService {
@@ -16,56 +18,59 @@ export class NewsService {
 
   async getNewsList(): Promise<INewsListResponse> {
     const newsList = await this.newsRepository.find({
-        where: {
-            isPublished: true
-        },
-        relations: {
-            newsContent: true
-        }
-    });
+      where: {
+        isPublished: true,
+      },
+      relations: {
+        newsContent: true,
+      },
+    })
+
     return {
-        data: newsList
-    };
+      data: newsList,
+    }
   }
 
   async getNewsById(id: string): Promise<INewsResponse> {
     const news = await this.newsRepository.findOne({
-        where: {
-            id,
-            isPublished: true,
-        },
-        relations: ['newsContent']
-    });
+      where: {
+        id,
+        isPublished: true,
+      },
+      relations: ['newsContent'],
+    })
 
-    if(!news)
-        throw new NotFoundException();
+    if (!news) {
+      throw new NotFoundException()
+    }
 
     return {
-        data: news
-    };
+      data: news,
+    }
   }
 
   async getNewsByIdWithLang(id: string, lang: string): Promise<INewsResponse> {
     const filter = {
-        id,
-        isPublished: true,
-        newsContent: {
-            lang
-        }
-    };
+      id,
+      isPublished: true,
+      newsContent: {
+        lang,
+      },
+    }
     const news = await this.newsRepository.findOne({
-        where: filter,
-        relations: ['newsContent']
-    });
+      where: filter,
+      relations: ['newsContent'],
+    })
 
-    if(!news)
-        throw new NotFoundException();
+    if (!news) {
+      throw new NotFoundException()
+    }
 
     return {
-        data: {
-            ...news,
-            newsContent: news.newsContent[0]
-        }
+      data: {
+        ...news,
+        newsContent: news.newsContent[0],
+      },
     }
   }
 }

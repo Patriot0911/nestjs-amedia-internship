@@ -1,20 +1,20 @@
 export interface INewsInfo {
-    id: string;
-    newsContent: INewsLangContent | INewsLangContent[];
-    publishedAt: string;
-    isPublished?: boolean;
-    createdAt: string;
-};
+  id: string
+  newsContent: INewsLangContent | INewsLangContent[]
+  publishedAt: string
+  isPublished?: boolean
+  createdAt: string
+}
 
 export interface INewsLangContent {
-    title: string;
-    shortDescription: string;
-};
+  title: string
+  shortDescription: string
+}
 
 export interface INewsListResponse {
-    data: INewsInfo[]
-};
+  data: INewsInfo[]
+}
 
 export interface INewsResponse {
-    data: INewsInfo
-};
+  data: INewsInfo
+}

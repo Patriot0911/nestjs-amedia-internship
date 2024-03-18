@@ -1,8 +1,9 @@
 import { Controller, Get, Param, ParseUUIDPipe } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { NewsService } from '../services/news.service'
-import { INewsListResponse, INewsResponse } from '../interfaces/news'
+import { INewsListResponse, INewsResponse } from 'src/modules/main/interfaces/news'
+
+import { NewsService } from 'src/modules/main/services/news.service'
 
 @ApiTags('News')
 @Controller('news')
@@ -11,16 +12,19 @@ export class NewsController {
 
   @Get('')
   async getNewsList(): Promise<INewsListResponse> {
-    return await this.newsService.getNewsList();
+    return await this.newsService.getNewsList()
   }
 
   @Get('/:id')
   async getNewsById(@Param('id', ParseUUIDPipe) id: string): Promise<INewsResponse> {
-    return await this.newsService.getNewsById(id);
+    return await this.newsService.getNewsById(id)
   }
 
   @Get('/:id/:lang')
-  async getLocalizedNewsById(@Param('id', ParseUUIDPipe) id: string, @Param('lang') lang: string): Promise<INewsResponse> {
-    return await this.newsService.getNewsByIdWithLang(id, lang);
+  async getLocalizedNewsById(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('lang') lang: string,
+  ): Promise<INewsResponse> {
+    return await this.newsService.getNewsByIdWithLang(id, lang)
   }
 }
