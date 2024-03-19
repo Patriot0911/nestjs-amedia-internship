@@ -2,75 +2,72 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm/repository/Repository'
 
-import { INewsListResponse, INewsResponse } from 'src/modules/main/interfaces/news'
+import { INewsFilter, INewsListResponse, INewsResponse } from 'src/modules/main/interfaces/news'
 
 import { NewsEntity } from 'src/modules/main/entities/news.entity'
 
 import { NewsDataMapper } from 'src/modules/main/data-mappers/news.data-mapper'
+import { NewsEntityDataFilter } from '../filters/news.entity.filters'
 
 @Injectable()
 export class NewsService {
-  constructor(
-    private readonly newsDataMapper: NewsDataMapper,
-    @InjectRepository(NewsEntity)
-    private readonly newsRepository: Repository<NewsEntity>,
-  ) {}
+  private readonly newsDataMapper: NewsDataMapper
+  private readonly newsEntityDataFilter: NewsEntityDataFilter
 
-  async getNewsList(): Promise<INewsListResponse> {
+  @InjectRepository(NewsEntity)
+  private readonly newsRepository: Repository<NewsEntity>
+
+  constructor() {
+    this.newsDataMapper = new NewsDataMapper()
+    this.newsEntityDataFilter = new NewsEntityDataFilter()
+  }
+
+  async getNewsList(queryFilter: INewsFilter): Promise<INewsListResponse> {
+    const filter = this.newsEntityDataFilter.getNewsListFilter(queryFilter)
+    const relations = {
+      newsContent: true,
+      newsCategory: {
+        catContent: true
+      }
+    }
+
     const newsList = await this.newsRepository.find({
-      where: {
-        isPublished: true,
-      },
-      relations: {
-        newsContent: true,
-      },
+      where: filter,
+      relations,
     })
 
+    const data = this.newsDataMapper.getNewsList(newsList)
+
     return {
-      data: newsList,
+      data,
     }
   }
 
-  async getNewsById(id: string): Promise<INewsResponse> {
-    const news = await this.newsRepository.findOne({
-      where: {
-        id,
-        isPublished: true,
-      },
-      relations: ['newsContent'],
-    })
-
-    if (!news) {
-      throw new NotFoundException()
-    }
-
-    return {
-      data: news,
-    }
-  }
-
-  async getNewsByIdWithLang(id: string, lang: string): Promise<INewsResponse> {
+  async getNewsById(id: string, lang?: string): Promise<INewsResponse> {
     const filter = {
       id,
       isPublished: true,
       newsContent: {
-        lang,
-      },
+        lang
+      }
+    }
+    const relations = {
+      newsCategory: true,
+      newsContent: true,
     }
     const news = await this.newsRepository.findOne({
       where: filter,
-      relations: ['newsContent'],
+      relations,
     })
 
     if (!news) {
       throw new NotFoundException()
     }
 
+    const data = this.newsDataMapper.getNewsById(news, !!lang)
+
     return {
-      data: {
-        ...news,
-        newsContent: news.newsContent[0],
-      },
+      data,
     }
   }
 }

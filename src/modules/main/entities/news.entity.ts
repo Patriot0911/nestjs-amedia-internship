@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 import { NewsContentEntity } from './newsContent.entity'
+import { NewsCategoryEntity } from './newsCategory.entity'
 
 @Entity('news')
 export class NewsEntity {
@@ -9,6 +10,9 @@ export class NewsEntity {
 
   @OneToMany(() => NewsContentEntity, (info) => info.newsPost)
   newsContent: NewsContentEntity[]
+
+  @ManyToOne(() => NewsCategoryEntity, (cat) => cat)
+  newsCategory: NewsCategoryEntity
 
   @Column({
     nullable: true,

@@ -18,3 +18,11 @@ export interface INewsListResponse {
 export interface INewsResponse {
   data: INewsInfo
 }
+
+export interface INewsFilter {
+  lang?: string
+  newsCategory?: string
+  publishedBefore?: string
+  publishedAfter?: string
+  searchTerm?: string
+}
