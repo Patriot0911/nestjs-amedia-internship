@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { NewsEntityDataFilter } from 'src/modules/main/filters/news.entity.filters'
 import { Repository } from 'typeorm/repository/Repository'
 
 import { INewsFilter, INewsListResponse, INewsResponse } from 'src/modules/main/interfaces/news'
@@ -7,11 +8,11 @@ import { INewsFilter, INewsListResponse, INewsResponse } from 'src/modules/main/
 import { NewsEntity } from 'src/modules/main/entities/news.entity'
 
 import { NewsDataMapper } from 'src/modules/main/data-mappers/news.data-mapper'
-import { NewsEntityDataFilter } from '../filters/news.entity.filters'
 
 @Injectable()
 export class NewsService {
   private readonly newsDataMapper: NewsDataMapper
+
   private readonly newsEntityDataFilter: NewsEntityDataFilter
 
   @InjectRepository(NewsEntity)
@@ -27,8 +28,8 @@ export class NewsService {
     const relations = {
       newsContent: true,
       newsCategory: {
-        catContent: true
-      }
+        catContent: true,
+      },
     }
 
     const newsList = await this.newsRepository.find({
@@ -48,8 +49,8 @@ export class NewsService {
       id,
       isPublished: true,
       newsContent: {
-        lang
-      }
+        lang,
+      },
     }
     const relations = {
       newsCategory: true,

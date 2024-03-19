@@ -1,7 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
-import { NewsContentEntity } from './newsContent.entity'
 import { NewsCategoryEntity } from './newsCategory.entity'
+import { NewsContentEntity } from './newsContent.entity'
 
 @Entity('news')
 export class NewsEntity {

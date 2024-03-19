@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { NewsCatContentEntity } from './newsCatContent.entity'
+
 import { NewsEntity } from './news.entity'
+import { NewsCatContentEntity } from './newsCatContent.entity'
 
 @Entity('newsCategory')
 export class NewsCategoryEntity {

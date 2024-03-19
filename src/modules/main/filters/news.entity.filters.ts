@@ -1,82 +1,95 @@
 import { Injectable } from '@nestjs/common'
-import { INewsFilter } from '../interfaces/news';
-import { Like, LessThan, MoreThan, And } from 'typeorm';
+import { And, LessThan, Like, MoreThan } from 'typeorm'
+
+import {
+  INewsFilter,
+  INewsListFilter,
+  IPrimeFilter,
+  TCategoryFilter,
+  TSearchAndLangFilter,
+  TTimeFilter,
+} from 'src/modules/main/interfaces/news'
 
 @Injectable()
 export class NewsEntityDataFilter {
-    getPrimeFilter(lang?: string) {
-        const primeFilter = {
-            isPublished: true,
-        }
-        return primeFilter
+  getPrimeFilter(): IPrimeFilter {
+    const primeFilter = {
+      isPublished: true,
     }
 
-    getCategoryFilter(category?: string) {
-        const categoryFilter = [
-            {
-                defaultName: Like(`%${category}%`),
-            },
-            {
-                catContent: {
-                    name: Like(`%${category}%`),
-                },
-            },
-        ]
-        return category && categoryFilter
+    return primeFilter
+  }
+
+  getCategoryFilter(category?: string): TCategoryFilter {
+    const categoryFilter = [
+      {
+        defaultName: Like(`%${category}%`),
+      },
+      {
+        catContent: {
+          name: Like(`%${category}%`),
+        },
+      },
+    ]
+
+    return category && categoryFilter
+  }
+
+  getSearchAndLangFilter(search?: string, lang?: string): TSearchAndLangFilter {
+    if (!search && lang) {
+      return {
+        lang,
+      }
     }
 
-    getSearchAndLangFilter(search?: string, lang?: string) {
-        if(!search && lang)
-            return {
-                lang
-            }
-        const searchFilter = [
-            {
-                shortDescription: Like(`%${search}%`),
-                lang,
-            },
-            {
-                title: Like(`%${search}%`),
-                lang,
-            },
-        ]
-        return search && searchFilter
+    const searchFilter = [
+      {
+        shortDescription: Like(`%${search}%`),
+        lang,
+      },
+      {
+        title: Like(`%${search}%`),
+        lang,
+      },
+    ]
+
+    return search && searchFilter
+  }
+
+  getTimeFilter(publishedAfter?: string, publishedBefore?: string): TTimeFilter {
+    if (!publishedAfter && !publishedBefore) {
+      return
     }
 
-    getTimeFilter(publishedAfter?: string, publishedBefore?: string) {
-        if(!publishedAfter && !publishedBefore)
-            return
-        const beforeFilter = LessThan(publishedBefore)
-        const afterFilter = MoreThan(publishedAfter)
+    const beforeFilter = LessThan(publishedBefore)
+    const afterFilter = MoreThan(publishedAfter)
 
-        if(publishedAfter && publishedBefore)
-            return And(afterFilter, beforeFilter)
-        if(publishedAfter)
-            return afterFilter
-        return beforeFilter
+    if (publishedAfter && publishedBefore) {
+      return And(afterFilter, beforeFilter)
     }
 
-    getNewsListFilter(queryFilter: INewsFilter) {
-        const {
-            newsCategory,
-            lang,
-            publishedAfter,
-            publishedBefore,
-            searchTerm,
-        } = queryFilter
-
-        const primeFilter = this.getPrimeFilter(lang)
-        const searchFilter = this.getSearchAndLangFilter(searchTerm, lang)
-        const categoryFilter = this.getCategoryFilter(newsCategory)
-        const dateFilter = this.getTimeFilter(publishedAfter, publishedBefore)
-
-        const filter = {
-            ...primeFilter,
-            newsContent: searchFilter,
-            newsCategory: categoryFilter,
-            publishedAt: dateFilter,
-        }
-
-        return filter
+    if (publishedAfter) {
+      return afterFilter
     }
+
+    return beforeFilter
+  }
+
+  getNewsListFilter(queryFilter: INewsFilter): INewsListFilter {
+    const { newsCategory, lang, publishedAfter, publishedBefore, searchTerm } = queryFilter
+
+    const primeFilter = this.getPrimeFilter()
+    const searchFilter = this.getSearchAndLangFilter(searchTerm, lang)
+    const categoryFilter = this.getCategoryFilter(newsCategory)
+    const dateFilter = this.getTimeFilter(publishedAfter, publishedBefore)
+
+    const filter = {
+      ...primeFilter,
+      newsContent: searchFilter,
+      newsCategory: categoryFilter,
+      publishedAt: dateFilter,
+    }
+
+    return filter
+  }
 }
