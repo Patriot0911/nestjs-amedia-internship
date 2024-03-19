@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { And, LessThan, Like, MoreThan } from 'typeorm'
+import { And, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm'
 
 import {
   INewsFilter,
@@ -61,8 +61,8 @@ export class NewsEntityDataFilter {
       return
     }
 
-    const beforeFilter = LessThan(publishedBefore)
-    const afterFilter = MoreThan(publishedAfter)
+    const beforeFilter = LessThanOrEqual(publishedBefore)
+    const afterFilter = MoreThanOrEqual(publishedAfter)
 
     if (publishedAfter && publishedBefore) {
       return And(afterFilter, beforeFilter)
