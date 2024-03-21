@@ -4,10 +4,10 @@ import { ApiTags } from '@nestjs/swagger'
 import { INewsListResponse, INewsResponse } from 'src/modules/main/interfaces/news'
 
 import { GetNewsDto } from 'src/modules/main/dto/getNews.dto'
+import { PostNewsDto } from 'src/modules/main/dto/postNews.dto'
+import { PutNewsDto } from 'src/modules/main/dto/putNews.dto'
 
 import { NewsService } from 'src/modules/main/services/news.service'
-import { PutNewsDto } from '../dto/putNews.dto'
-import { PostNewsDto } from '../dto/postNews.dto'
 
 @ApiTags('News')
 @Controller('news')

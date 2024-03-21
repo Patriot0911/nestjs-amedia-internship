@@ -16,13 +16,13 @@ export class NewsCategoryEntity {
 
   @Column({
     nullable: true,
-    default: false
+    default: false,
   })
   isPublished: boolean
 
   @Column({
     nullable: true,
-    type: "date"
+    type: 'date',
   })
   publishedAt: string
 

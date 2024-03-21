@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsString, IsUUID, IsUrl } from 'class-validator'
+import { IsBoolean, IsOptional, IsString, IsUrl } from 'class-validator'
 
 class PostNewsTranslationsDto {
   @IsString()

@@ -1,7 +1,7 @@
 import { FindOperator } from 'typeorm'
 
+import { NewsEntity } from 'src/modules/main/entities/news.entity'
 import { NewsCategoryEntity } from 'src/modules/main/entities/newsCategory.entity'
-import { NewsEntity } from '../entities/news.entity'
 
 export interface INewsInfo {
   id: string
@@ -53,12 +53,6 @@ export interface INewsFilter {
   searchTerm?: string
 }
 
-export interface IPrimeFilter {}
-
-interface ICatContentFilter {
-  name: FindOperator<string>
-}
-
 export type TCategoryFilter = {
   id: string
 }
@@ -86,7 +80,7 @@ export interface INewsListFilter {
 
 export interface ICategoryList {
   data: NewsCategoryEntity[]
-};
+}
 
 export interface ICatTranslationToResList {
   translationId: string
@@ -103,5 +97,5 @@ export interface ICatToResList {
 }
 
 export type TCategoryListResponse = {
-  data: ICatToResList[];
+  data: ICatToResList[]
 }

@@ -13,12 +13,12 @@ export class NewsEntity {
 
   @ManyToOne(() => NewsCategoryEntity, (cat) => cat, {
     cascade: true,
-    onDelete: "CASCADE",
+    onDelete: 'CASCADE',
   })
   newsCategory: NewsCategoryEntity
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   slug: string
 

@@ -20,8 +20,9 @@ export class NewsEntityDataFilter {
 
   getCategoryFilter(categoryId?: string): TCategoryFilter {
     const categoryFilter = {
-      id: categoryId
+      id: categoryId,
     }
+
     return categoryId && categoryFilter
   }
 

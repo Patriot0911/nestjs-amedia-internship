@@ -1,11 +1,12 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
 import { TCategoryListResponse } from 'src/modules/main/interfaces/news'
 
+import { PostCategoryDto } from 'src/modules/main/dto/postCat.dto'
+import { PutCategoryDto } from 'src/modules/main/dto/putCat.dto'
+
 import { CategoryNewsService } from 'src/modules/main/services/category.service'
-import { PutCategoryDto } from '../dto/putCat.dto'
-import { PostCategoryDto } from '../dto/postCat.dto'
 
 @ApiTags('Categories')
 @Controller('news-category')
@@ -23,7 +24,10 @@ export class CategoryNewsController {
   }
 
   @Put('/item/:id')
-  async putCatById(@Param('id', ParseUUIDPipe) id: string, @Body() body: PutCategoryDto): Promise<TCategoryListResponse> {
+  async putCatById(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() body: PutCategoryDto,
+  ): Promise<TCategoryListResponse> {
     return await this.categoryNewsService.putCategoryInfo(id, body)
   }
 

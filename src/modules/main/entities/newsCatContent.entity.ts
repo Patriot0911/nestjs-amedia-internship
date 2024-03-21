@@ -18,7 +18,7 @@ export class NewsCatContentEntity {
 
   @ManyToOne(() => NewsCategoryEntity, (post) => post.catContent, {
     cascade: true,
-    onDelete: "CASCADE",
+    onDelete: 'CASCADE',
   })
   category: NewsCategoryEntity
 

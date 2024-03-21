@@ -1,7 +1,6 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 import { NewsEntity } from './news.entity'
-import { NewsPostContentData } from './newsPostContentData.entity'
 
 @Entity('newsContent')
 export class NewsContentEntity {
@@ -18,16 +17,23 @@ export class NewsContentEntity {
   shortDescription: string
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   thumbnailUrl: string
 
-  @OneToMany(() => NewsPostContentData, (info) => info.translationContent)
-  postDataContent: NewsPostContentData[]
+  @Column({
+    nullable: true,
+  })
+  contentData: string
+
+  @Column({
+    nullable: true,
+  })
+  metaData: string
 
   @ManyToOne(() => NewsEntity, (post) => post.newsContent, {
     cascade: true,
-    onDelete: "CASCADE",
+    onDelete: 'CASCADE',
   })
   newsPost: NewsEntity
 
