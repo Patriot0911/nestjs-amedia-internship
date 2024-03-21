@@ -13,26 +13,16 @@ import {
 @Injectable()
 export class NewsEntityDataFilter {
   getPrimeFilter(): IPrimeFilter {
-    const primeFilter = {
-      isPublished: true,
-    }
+    const primeFilter = {}
 
     return primeFilter
   }
 
-  getCategoryFilter(category?: string): TCategoryFilter {
-    const categoryFilter = [
-      {
-        defaultName: Like(`%${category}%`),
-      },
-      {
-        catContent: {
-          name: Like(`%${category}%`),
-        },
-      },
-    ]
-
-    return category && categoryFilter
+  getCategoryFilter(categoryId?: string): TCategoryFilter {
+    const categoryFilter = {
+      id: categoryId
+    }
+    return categoryId && categoryFilter
   }
 
   getSearchAndLangFilter(search?: string, lang?: string): TSearchAndLangFilter {

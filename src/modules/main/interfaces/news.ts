@@ -1,27 +1,48 @@
 import { FindOperator } from 'typeorm'
 
 import { NewsCategoryEntity } from 'src/modules/main/entities/newsCategory.entity'
-import { NewsContentEntity } from 'src/modules/main/entities/newsContent.entity'
+import { NewsEntity } from '../entities/news.entity'
 
 export interface INewsInfo {
   id: string
-  newsContent: INewsLangContent | INewsLangContent[]
+  translationList: INewsTranslations[]
+  slug?: string
   publishedAt: string
+  newsCategory?: ICatToResList
   isPublished?: boolean
   createdAt: string
 }
 
-export interface INewsLangContent {
+export interface INewsTranslations {
+  id: string
+  lang: string
   title: string
-  shortDescription: string
+  description: string
+  thumbnailUrl?: string
+  newPost?: NewsEntity
+  contentData?: IContentData[]
+}
+
+export interface IContentData {
+  id: string
+  type: string
+  htmlText: string
+  bgImgSrc: string
 }
 
 export interface INewsListResponse {
   data: INewsInfo[]
+  meta: {
+    total: number
+  }
 }
 
 export interface INewsResponse {
   data: INewsInfo
+}
+
+export interface INewsPutResponse {
+  data: NewsEntity
 }
 
 export interface INewsFilter {
@@ -32,22 +53,15 @@ export interface INewsFilter {
   searchTerm?: string
 }
 
-export interface IPrimeFilter {
-  isPublished: boolean
-}
+export interface IPrimeFilter {}
 
 interface ICatContentFilter {
   name: FindOperator<string>
 }
 
-type TCatDefaultName = FindOperator<string>
-
-interface ICategoryFiltered {
-  defaultName?: TCatDefaultName
-  catContent?: ICatContentFilter
+export type TCategoryFilter = {
+  id: string
 }
-
-export type TCategoryFilter = ICategoryFiltered[]
 
 interface ILangFilter {
   lang?: string
@@ -65,17 +79,29 @@ export type TSearchAndLangFilter = ILangFilter | (ISearchByDescription | ISearch
 export type TTimeFilter = FindOperator<string>
 
 export interface INewsListFilter {
-  isPublished: boolean
   publishedAt: TTimeFilter
   newsContent: TSearchAndLangFilter
   newsCategory: TCategoryFilter
 }
 
-export interface INewsById {
+export interface ICategoryList {
+  data: NewsCategoryEntity[]
+};
+
+export interface ICatTranslationToResList {
+  translationId: string
+  lang: string
+  title: string
+}
+
+export interface ICatToResList {
   id: string
-  newsContent: NewsContentEntity | NewsContentEntity[]
-  newsCategory: NewsCategoryEntity
-  publishedAt: string
-  isPublished: boolean
+  translationList: ICatTranslationToResList[]
+  publishedAt: string | null
   createdAt: string
+  isPublished: boolean
+}
+
+export type TCategoryListResponse = {
+  data: ICatToResList[];
 }

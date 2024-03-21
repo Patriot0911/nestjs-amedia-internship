@@ -11,8 +11,16 @@ export class NewsEntity {
   @OneToMany(() => NewsContentEntity, (info) => info.newsPost)
   newsContent: NewsContentEntity[]
 
-  @ManyToOne(() => NewsCategoryEntity, (cat) => cat)
+  @ManyToOne(() => NewsCategoryEntity, (cat) => cat, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   newsCategory: NewsCategoryEntity
+
+  @Column({
+    nullable: true
+  })
+  slug: string
 
   @Column({
     nullable: true,

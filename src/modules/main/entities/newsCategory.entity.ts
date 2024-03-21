@@ -14,9 +14,25 @@ export class NewsCategoryEntity {
   @CreateDateColumn()
   createdAt: string
 
+  @Column({
+    nullable: true,
+    default: false
+  })
+  isPublished: boolean
+
+  @Column({
+    nullable: true,
+    type: "date"
+  })
+  publishedAt: string
+
   @OneToMany(() => NewsEntity, (post) => post.newsCategory)
   newsPosts: NewsEntity[]
 
   @OneToMany(() => NewsCatContentEntity, (info) => info.category)
   catContent: NewsCatContentEntity[]
+
+  constructor(newsData: Partial<NewsCategoryEntity>) {
+    Object.assign(this, newsData)
+  }
 }

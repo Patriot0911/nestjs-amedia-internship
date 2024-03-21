@@ -20,7 +20,7 @@ async function bootstrap(): Promise<void> {
   app.useGlobalPipes(new ValidationPipe())
 
   app.enableCors({
-    origin: process.env.CORS_ORIGINS.split(','),
+    origin: true, // process.env.CORS_ORIGINS.split(','),
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   })

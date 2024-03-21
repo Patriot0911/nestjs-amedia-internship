@@ -1,26 +1,62 @@
 import { Injectable } from '@nestjs/common'
 
-import { INewsById } from 'src/modules/main/interfaces/news'
+import { INewsInfo, INewsTranslations } from 'src/modules/main/interfaces/news'
 
 import { NewsEntity } from 'src/modules/main/entities/news.entity'
+import { NewsContentEntity } from '../entities/newsContent.entity';
+import { NewsCategoryEntity } from '../entities/newsCategory.entity';
+import { CategoryNewsDataMapper } from './category.data-mapper';
 
 @Injectable()
 export class NewsDataMapper {
-  getNewsList(newsList: NewsEntity[]): NewsEntity[] {
-    return [...newsList]
+  private readonly categoryDataMapper: CategoryNewsDataMapper
+
+  constructor() {
+    this.categoryDataMapper = new CategoryNewsDataMapper()
   }
 
-  getNewsById(news: NewsEntity, isLocalized: boolean): INewsById {
-    const { newsContent } = news
-    if (isLocalized) {
-      return {
-        ...news,
-        newsContent: newsContent[0],
-      }
-    }
+  getSingleTranslation(newsContent: NewsContentEntity, newsId?: string): INewsTranslations {
+    const {
+      id,
+      shortDescription,
+      ...rest
+    } = newsContent;
+    const translationContent = {
+      ...rest,
+      id: newsId ?? id,
+      description: shortDescription,
+    };
+    return translationContent
+  }
 
-    return {
-      ...news,
-    }
+  getTranslationList(newsContent: NewsContentEntity[], newsId?: string): INewsTranslations[]{
+    const translationList = newsContent.map(
+      (contet) => this.getSingleTranslation(contet, newsId)
+    )
+    return translationList
+  }
+
+  getNewsList(newsList: NewsEntity[]): INewsInfo[] {
+    const mappedNewsList = newsList.map(
+      (news) => this.getNewsById(news)
+    )
+    return mappedNewsList
+  }
+
+  getNewsById(news: NewsEntity): INewsInfo {
+    const {
+      newsContent,
+      id,
+      ...rest
+    } = news
+    const translationList = this.getTranslationList(newsContent, id)
+    const newsCategory = rest.newsCategory && this.categoryDataMapper.getCategoryRefItem(rest.newsCategory);
+    const mappedNews: INewsInfo = {
+      ...rest,
+      id,
+      translationList,
+      newsCategory
+    };
+    return mappedNews
   }
 }

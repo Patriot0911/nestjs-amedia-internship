@@ -16,6 +16,13 @@ export class NewsCatContentEntity {
   @CreateDateColumn()
   createdAt: string
 
-  @ManyToOne(() => NewsCategoryEntity, (post) => post.catContent, { cascade: true })
+  @ManyToOne(() => NewsCategoryEntity, (post) => post.catContent, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   category: NewsCategoryEntity
+
+  constructor(newsData: Partial<NewsCatContentEntity>) {
+    Object.assign(this, newsData)
+  }
 }
