@@ -131,17 +131,20 @@ export class NewsService {
       throw new NotFoundException()
     }
 
-    const cat = await this.newsCategoryRepository.findOne({
-      where: {
-        id: body.newsCategory.id,
-      },
-    })
-    const modBaseNews: NewsEntity = {
-      ...baseNews,
-      isPublished: body.isPublished,
-      publishedAt: body.publishedAt,
-      slug: body.slug,
-      newsCategory: cat,
+    if(body.newsCategory) {
+      const cat = await this.newsCategoryRepository.findOne({
+        where: {
+          id: body.newsCategory.id,
+        },
+      })
+      const modBaseNews: NewsEntity = {
+        ...baseNews,
+        isPublished: body.isPublished,
+        publishedAt: body.publishedAt,
+        slug: body.slug,
+        newsCategory: cat,
+      }
+      await this.newsRepository.save(modBaseNews)
     }
     const curContentNews = baseNews.newsContent.find((item) => item.lang === body.lang)
     const bodyCurContent = body.translationList.find((item) => item.lang === body.lang)
@@ -155,7 +158,6 @@ export class NewsService {
     }
 
     await this.newsContentRepository.save(modContentNews)
-    await this.newsRepository.save(modBaseNews)
     const data = await this.getSingleNewsByIdFromDb(id)
 
     return {

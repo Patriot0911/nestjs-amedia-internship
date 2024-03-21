@@ -4,7 +4,6 @@ import { And, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm'
 import {
   INewsFilter,
   INewsListFilter,
-  IPrimeFilter,
   TCategoryFilter,
   TSearchAndLangFilter,
   TTimeFilter,
@@ -12,7 +11,7 @@ import {
 
 @Injectable()
 export class NewsEntityDataFilter {
-  getPrimeFilter(): IPrimeFilter {
+  getPrimeFilter(): any {
     const primeFilter = {}
 
     return primeFilter
