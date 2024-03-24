@@ -8,7 +8,7 @@ import {
   IGetCategoryResponse,
   IPostCategoryResponse,
   IPutCategoryResponse,
-} from 'src/modules/main/interfaces/news'
+} from 'src/modules/main/interfaces/category'
 
 import { PostCategoryDto } from 'src/modules/main/dto/categories/postCat.dto'
 import { PutCategoryDto } from 'src/modules/main/dto/categories/putCat.dto'

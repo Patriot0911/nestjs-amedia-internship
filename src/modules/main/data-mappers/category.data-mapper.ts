@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
-import { ICatToResList, ICatTranslationToResList, ICategoryMappedList } from 'src/modules/main/interfaces/news'
+import { ICatToResList, ICatTranslationToResList, ICategoryMappedList } from 'src/modules/main/interfaces/category'
 
 import { NewsCatContentEntity } from 'src/modules/main/entities/newsCatContent.entity'
 import { NewsCategoryEntity } from 'src/modules/main/entities/newsCategory.entity'
