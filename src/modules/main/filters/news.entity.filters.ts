@@ -11,12 +11,6 @@ import {
 
 @Injectable()
 export class NewsEntityDataFilter {
-  getPrimeFilter(): any {
-    const primeFilter = {}
-
-    return primeFilter
-  }
-
   getCategoryFilter(categoryId?: string): TCategoryFilter {
     const categoryFilter = {
       id: categoryId,
@@ -68,13 +62,11 @@ export class NewsEntityDataFilter {
   getNewsListFilter(queryFilter: INewsFilter): INewsListFilter {
     const { newsCategory, lang, publishedAfter, publishedBefore, searchTerm } = queryFilter
 
-    const primeFilter = this.getPrimeFilter()
     const searchFilter = this.getSearchAndLangFilter(searchTerm, lang)
     const categoryFilter = this.getCategoryFilter(newsCategory)
     const dateFilter = this.getTimeFilter(publishedAfter, publishedBefore)
 
     const filter = {
-      ...primeFilter,
       newsContent: searchFilter,
       newsCategory: categoryFilter,
       publishedAt: dateFilter,

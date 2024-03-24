@@ -1,7 +1,13 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { INewsListResponse, INewsResponse } from 'src/modules/main/interfaces/news'
+import {
+  IDeleteNewsResponse,
+  INewsListResponse,
+  INewsPutResponse,
+  INewsResponse,
+  IPostNewsResponse,
+} from 'src/modules/main/interfaces/news'
 
 import { GetNewsDto } from 'src/modules/main/dto/getNews.dto'
 import { PostNewsDto } from 'src/modules/main/dto/postNews.dto'
@@ -25,17 +31,17 @@ export class NewsController {
   }
 
   @Post('/item')
-  async postNewsById(@Body() body: PostNewsDto): Promise<any> {
+  async postNewsById(@Body() body: PostNewsDto): Promise<IPostNewsResponse> {
     return await this.newsService.postNewsById(body)
   }
 
   @Put('/item/:id')
-  async putNewsById(@Param('id', ParseUUIDPipe) id: string, @Body() body: PutNewsDto): Promise<any> {
+  async putNewsById(@Param('id', ParseUUIDPipe) id: string, @Body() body: PutNewsDto): Promise<INewsPutResponse> {
     return await this.newsService.putNewsById(id, body)
   }
 
   @Delete('/item/:id')
-  async deleteNewsById(@Param('id', ParseUUIDPipe) id: string): Promise<any> {
+  async deleteNewsById(@Param('id', ParseUUIDPipe) id: string): Promise<IDeleteNewsResponse> {
     return await this.newsService.deleteNewsById(id)
   }
 }

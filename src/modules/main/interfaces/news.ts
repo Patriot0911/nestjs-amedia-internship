@@ -1,6 +1,8 @@
 import { FindOperator } from 'typeorm'
 
+import { AppealEntity } from 'src/modules/main/entities/appeal.entity'
 import { NewsEntity } from 'src/modules/main/entities/news.entity'
+import { NewsCatContentEntity } from 'src/modules/main/entities/newsCatContent.entity'
 import { NewsCategoryEntity } from 'src/modules/main/entities/newsCategory.entity'
 
 export interface INewsInfo {
@@ -96,6 +98,48 @@ export interface ICatToResList {
   isPublished: boolean
 }
 
-export type TCategoryListResponse = {
+export type ICategoryRefsListResponse = {
   data: ICatToResList[]
+}
+
+export interface IDeleteCategoryResponse {
+  data: NewsCategoryEntity
+}
+
+export interface IPostCategoryResponse {
+  data: NewsCategoryEntity
+}
+
+export interface IPutCategoryResponse {
+  data: NewsCatContentEntity
+}
+
+export interface IGetCategoryResponse {
+  data: ICatToResList
+}
+
+export interface ICategoryMappedList {
+  id: string
+  createdAt: Date | string
+  isPublished?: boolean
+  title: string
+}
+
+export interface ICategoryListResponse {
+  meta: {
+    total: number
+  }
+  data: ICategoryMappedList[]
+}
+
+export interface IPostAppealResponse {
+  data: AppealEntity
+}
+
+export interface IPostNewsResponse {
+  data: NewsEntity
+}
+
+export interface IDeleteNewsResponse {
+  data: NewsEntity
 }

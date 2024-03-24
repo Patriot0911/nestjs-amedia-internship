@@ -2,7 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm/repository/Repository'
 
-import { TCategoryListResponse } from 'src/modules/main/interfaces/news'
+import {
+  ICategoryListResponse,
+  ICategoryRefsListResponse,
+  IDeleteCategoryResponse,
+  IGetCategoryResponse,
+  IPostCategoryResponse,
+  IPutCategoryResponse,
+} from 'src/modules/main/interfaces/news'
 
 import { PostCategoryDto } from 'src/modules/main/dto/postCat.dto'
 import { PutCategoryDto } from 'src/modules/main/dto/putCat.dto'
@@ -26,7 +33,7 @@ export class CategoryNewsService {
     this.categoryDataMapper = new CategoryNewsDataMapper()
   }
 
-  async postCategory(body: PostCategoryDto): Promise<any> {
+  async postCategory(body: PostCategoryDto): Promise<IPostCategoryResponse> {
     const category = new NewsCategoryEntity({
       isPublished: body.isPublished,
       defaultName: body.translationList[0].title,
@@ -47,7 +54,7 @@ export class CategoryNewsService {
     }
   }
 
-  async deleteCategory(id: string): Promise<any> {
+  async deleteCategory(id: string): Promise<IDeleteCategoryResponse> {
     const category = await this.categoryRepository.findOne({
       where: {
         id,
@@ -64,7 +71,7 @@ export class CategoryNewsService {
     }
   }
 
-  async putCategoryInfo(id: string, body: PutCategoryDto): Promise<any> {
+  async putCategoryInfo(id: string, body: PutCategoryDto): Promise<IPutCategoryResponse> {
     const category = await this.categoryRepository.findOne({
       where: {
         id,
@@ -102,7 +109,7 @@ export class CategoryNewsService {
     }
   }
 
-  async getCategoryInfo(id: string): Promise<any> {
+  async getCategoryInfo(id: string): Promise<IGetCategoryResponse> {
     const category = await this.categoryRepository.findOne({
       where: {
         id,
@@ -122,19 +129,20 @@ export class CategoryNewsService {
     }
   }
 
-  async getCategoryNewsList(): Promise<any> {
+  async getCategoryNewsList(): Promise<ICategoryListResponse> {
     const categoryList = await this.categoryRepository.find()
     const data = this.categoryDataMapper.getCategoryList(categoryList)
+    const meta = {
+      total: data.length,
+    }
 
     return {
-      meta: {
-        total: data.length,
-      },
+      meta,
       data,
     }
   }
 
-  async getCategoryRefsNewsList(): Promise<TCategoryListResponse> {
+  async getCategoryRefsNewsList(): Promise<ICategoryRefsListResponse> {
     const categoryList = await this.categoryRepository.find({
       relations: {
         catContent: true,

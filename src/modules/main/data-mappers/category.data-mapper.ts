@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
-import { ICatToResList, ICatTranslationToResList } from 'src/modules/main/interfaces/news'
+import { ICatToResList, ICatTranslationToResList, ICategoryMappedList } from 'src/modules/main/interfaces/news'
 
 import { NewsCatContentEntity } from 'src/modules/main/entities/newsCatContent.entity'
 import { NewsCategoryEntity } from 'src/modules/main/entities/newsCategory.entity'
@@ -9,7 +9,7 @@ import { NewsCategoryEntity } from 'src/modules/main/entities/newsCategory.entit
 export class CategoryNewsDataMapper {
   getMappedTranslationCatList(catContent: NewsCatContentEntity[]): ICatTranslationToResList[] {
     const mappedCats: ICatTranslationToResList[] = catContent.map((cat) => {
-      const { createdAt, id, lang, name } = cat
+      const { id, lang, name } = cat
 
       return {
         lang,
@@ -48,15 +48,17 @@ export class CategoryNewsDataMapper {
     return mappedCategories
   }
 
-  getCategoryList(categories: NewsCategoryEntity[]): any {
-    const mappedCategories = categories.map((cat) => {
+  getCategoryList(categories: NewsCategoryEntity[]): ICategoryMappedList[] {
+    const mappedCallBack = (cat: NewsCategoryEntity): ICategoryMappedList => {
       const { catContent, defaultName, newsPosts, ...rest } = cat
 
       return {
         ...rest,
         title: defaultName,
       }
-    })
+    }
+
+    const mappedCategories = categories.map(mappedCallBack)
 
     return mappedCategories
   }

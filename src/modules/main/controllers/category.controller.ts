@@ -1,7 +1,14 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { TCategoryListResponse } from 'src/modules/main/interfaces/news'
+import {
+  ICategoryListResponse,
+  ICategoryRefsListResponse,
+  IDeleteCategoryResponse,
+  IGetCategoryResponse,
+  IPostCategoryResponse,
+  IPutCategoryResponse,
+} from 'src/modules/main/interfaces/news'
 
 import { PostCategoryDto } from 'src/modules/main/dto/postCat.dto'
 import { PutCategoryDto } from 'src/modules/main/dto/putCat.dto'
@@ -14,12 +21,12 @@ export class CategoryNewsController {
   constructor(private readonly categoryNewsService: CategoryNewsService) {}
 
   @Get('/list')
-  async getCatList(): Promise<TCategoryListResponse> {
+  async getCatList(): Promise<ICategoryListResponse> {
     return await this.categoryNewsService.getCategoryNewsList()
   }
 
   @Get('/item/:id')
-  async getCatById(@Param('id', ParseUUIDPipe) id: string): Promise<TCategoryListResponse> {
+  async getCatById(@Param('id', ParseUUIDPipe) id: string): Promise<IGetCategoryResponse> {
     return await this.categoryNewsService.getCategoryInfo(id)
   }
 
@@ -27,22 +34,22 @@ export class CategoryNewsController {
   async putCatById(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() body: PutCategoryDto,
-  ): Promise<TCategoryListResponse> {
+  ): Promise<IPutCategoryResponse> {
     return await this.categoryNewsService.putCategoryInfo(id, body)
   }
 
   @Post('/item')
-  async postCatById(@Body() body: PostCategoryDto): Promise<TCategoryListResponse> {
+  async postCatById(@Body() body: PostCategoryDto): Promise<IPostCategoryResponse> {
     return await this.categoryNewsService.postCategory(body)
   }
 
   @Delete('/item/:id')
-  async deleteCatById(@Param('id', ParseUUIDPipe) id: string): Promise<TCategoryListResponse> {
+  async deleteCatById(@Param('id', ParseUUIDPipe) id: string): Promise<IDeleteCategoryResponse> {
     return await this.categoryNewsService.deleteCategory(id)
   }
 
   @Get('/reference')
-  async getCatRefsList(): Promise<TCategoryListResponse> {
+  async getCatRefsList(): Promise<ICategoryRefsListResponse> {
     return await this.categoryNewsService.getCategoryRefsNewsList()
   }
 }

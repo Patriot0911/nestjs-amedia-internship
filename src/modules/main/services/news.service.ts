@@ -3,7 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { NewsEntityDataFilter } from 'src/modules/main/filters/news.entity.filters'
 import { Repository } from 'typeorm/repository/Repository'
 
-import { INewsFilter, INewsListResponse, INewsPutResponse, INewsResponse } from 'src/modules/main/interfaces/news'
+import {
+  IDeleteNewsResponse,
+  INewsFilter,
+  INewsListResponse,
+  INewsPutResponse,
+  INewsResponse,
+  IPostNewsResponse,
+} from 'src/modules/main/interfaces/news'
 
 import { PostNewsDto } from 'src/modules/main/dto/postNews.dto'
 import { PutNewsDto } from 'src/modules/main/dto/putNews.dto'
@@ -34,7 +41,7 @@ export class NewsService {
     this.newsEntityDataFilter = new NewsEntityDataFilter()
   }
 
-  async postNewsById(body: PostNewsDto): Promise<any> {
+  async postNewsById(body: PostNewsDto): Promise<IPostNewsResponse> {
     const newNews = new NewsEntity({
       isPublished: body.isPublished,
       slug: body.slug,
@@ -131,7 +138,7 @@ export class NewsService {
       throw new NotFoundException()
     }
 
-    if(body.newsCategory) {
+    if (body.newsCategory) {
       const cat = await this.newsCategoryRepository.findOne({
         where: {
           id: body.newsCategory.id,
@@ -144,8 +151,10 @@ export class NewsService {
         slug: body.slug,
         newsCategory: cat,
       }
+
       await this.newsRepository.save(modBaseNews)
     }
+
     const curContentNews = baseNews.newsContent.find((item) => item.lang === body.lang)
     const bodyCurContent = body.translationList.find((item) => item.lang === body.lang)
     const modContentNews: NewsContentEntity = {
@@ -165,7 +174,7 @@ export class NewsService {
     }
   }
 
-  async deleteNewsById(id: string): Promise<any> {
+  async deleteNewsById(id: string): Promise<IDeleteNewsResponse> {
     const baseNews = await this.getSingleNewsByIdFromDb(id)
     if (!baseNews) {
       throw new NotFoundException()

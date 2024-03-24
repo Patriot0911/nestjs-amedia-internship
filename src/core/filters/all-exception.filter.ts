@@ -10,6 +10,7 @@ import {
 import { RpcException } from '@nestjs/microservices'
 import { isObject } from 'class-validator'
 import { Observable, throwError } from 'rxjs'
+import { QueryFailedError } from 'typeorm'
 
 import { RpcRequest } from 'src/core/interfaces/rpc'
 
@@ -18,7 +19,7 @@ export class AllExceptionFilter implements ExceptionFilter {
   protected readonly logger = new Logger('Exception')
 
   catch(
-    exception: (Error | HttpException | RpcException) & { statusCode?: number },
+    exception: (Error | HttpException | RpcException | QueryFailedError) & { statusCode?: number },
     host: ArgumentsHost,
   ): Observable<unknown> {
     const { headers, user } = this.getRequestFromContext(host)
@@ -27,6 +28,19 @@ export class AllExceptionFilter implements ExceptionFilter {
       this.logger.error({ headers, user, exception })
 
       return this.buildResponseFromContext(host, exception)
+    }
+
+    if (exception.constructor === QueryFailedError) {
+      const message = 'An error occurred with the database query'
+      const details = (<QueryFailedError>exception).message
+      const statusCode = HttpStatus.UNPROCESSABLE_ENTITY
+      const newException = {
+        statusCode,
+        message,
+        details,
+      }
+
+      return this.buildResponseFromContext(host, newException)
     }
 
     const httpException = <HttpException>exception
