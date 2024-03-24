@@ -9,9 +9,9 @@ import {
   IPostNewsResponse,
 } from 'src/modules/main/interfaces/news'
 
-import { GetNewsDto } from 'src/modules/main/dto/getNews.dto'
-import { PostNewsDto } from 'src/modules/main/dto/postNews.dto'
-import { PutNewsDto } from 'src/modules/main/dto/putNews.dto'
+import { GetNewsDto } from 'src/modules/main/dto/news/getNews.dto'
+import { PostNewsDto } from 'src/modules/main/dto/news/postNews.dto'
+import { PutNewsDto } from 'src/modules/main/dto/news/putNews.dto'
 
 import { NewsService } from 'src/modules/main/services/news.service'
 

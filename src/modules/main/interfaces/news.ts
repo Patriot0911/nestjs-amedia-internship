@@ -1,6 +1,5 @@
 import { FindOperator } from 'typeorm'
 
-import { AppealEntity } from 'src/modules/main/entities/appeal.entity'
 import { NewsEntity } from 'src/modules/main/entities/news.entity'
 import { NewsCatContentEntity } from 'src/modules/main/entities/newsCatContent.entity'
 import { NewsCategoryEntity } from 'src/modules/main/entities/newsCategory.entity'
@@ -130,10 +129,6 @@ export interface ICategoryListResponse {
     total: number
   }
   data: ICategoryMappedList[]
-}
-
-export interface IPostAppealResponse {
-  data: AppealEntity
 }
 
 export interface IPostNewsResponse {

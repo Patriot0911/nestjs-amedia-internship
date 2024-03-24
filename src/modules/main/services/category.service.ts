@@ -11,8 +11,8 @@ import {
   IPutCategoryResponse,
 } from 'src/modules/main/interfaces/news'
 
-import { PostCategoryDto } from 'src/modules/main/dto/postCat.dto'
-import { PutCategoryDto } from 'src/modules/main/dto/putCat.dto'
+import { PostCategoryDto } from 'src/modules/main/dto/categories/postCat.dto'
+import { PutCategoryDto } from 'src/modules/main/dto/categories/putCat.dto'
 
 import { NewsCatContentEntity } from 'src/modules/main/entities/newsCatContent.entity'
 import { NewsCategoryEntity } from 'src/modules/main/entities/newsCategory.entity'

@@ -12,8 +12,8 @@ import {
   IPostNewsResponse,
 } from 'src/modules/main/interfaces/news'
 
-import { PostNewsDto } from 'src/modules/main/dto/postNews.dto'
-import { PutNewsDto } from 'src/modules/main/dto/putNews.dto'
+import { PostNewsDto } from 'src/modules/main/dto/news/postNews.dto'
+import { PutNewsDto } from 'src/modules/main/dto/news/putNews.dto'
 
 import { NewsEntity } from 'src/modules/main/entities/news.entity'
 import { NewsCategoryEntity } from 'src/modules/main/entities/newsCategory.entity'

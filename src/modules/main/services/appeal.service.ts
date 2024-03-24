@@ -5,9 +5,9 @@ import { MAX_APPEAL_ENTRIES_COUNT, appealYearGap, isValidAgeToIpn } from 'src/mo
 import { AppealTimeException } from 'src/modules/main/exceptions/appealTime.exception'
 import { Repository } from 'typeorm/repository/Repository'
 
-import { IPostAppealResponse } from 'src/modules/main/interfaces/news'
+import { IPostAppealResponse } from 'src/modules/main/interfaces/appeal'
 
-import { PostAppealDto } from 'src/modules/main/dto/postAppeal.dto'
+import { PostAppealDto } from 'src/modules/main/dto/appeal/postAppeal.dto'
 
 import { AppealEntity } from 'src/modules/main/entities/appeal.entity'
 

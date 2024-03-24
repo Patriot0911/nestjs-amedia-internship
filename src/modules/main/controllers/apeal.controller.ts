@@ -1,9 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 
-import { IPostAppealResponse } from 'src/modules/main/interfaces/news'
+import { IPostAppealResponse } from 'src/modules/main/interfaces/appeal'
 
-import { PostAppealDto } from 'src/modules/main/dto/postAppeal.dto'
+import { PostAppealDto } from 'src/modules/main/dto/appeal/postAppeal.dto'
 
 import { AppealsService } from 'src/modules/main/services/appeal.service'
 
